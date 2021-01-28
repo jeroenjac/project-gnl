@@ -1,21 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   get_next_line.h                                    :+:    :+:            */
+/*   static.c                                           :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: jjacobs <jjacobs@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2020/12/21 12:58:46 by jjacobs       #+#    #+#                 */
-/*   Updated: 2020/12/21 14:53:39 by jjacobs       ########   odam.nl         */
+/*   Created: 2021/01/28 15:51:16 by jjacobs       #+#    #+#                 */
+/*   Updated: 2021/01/28 15:51:50 by jjacobs       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include <stdio.h>
 
-#include <stdlib.h>
-#include <unistd.h>
+int		fun(void)
+{
+	static int	var = 0;
 
-int get_next_line(int fd, char **line);
+	var++;
+	return (var);
+}
 
-#endif
+int		main(void)
+{
+	int		run;
+
+	run = 0;
+	while (run < 9)
+	{
+		printf("var = %i\n", fun());
+		run++;
+	}
+	return (0);
+}
