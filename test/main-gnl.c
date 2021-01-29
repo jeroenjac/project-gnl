@@ -6,7 +6,7 @@
 /*   By: jjacobs <jjacobs@student.codam.nl>           +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2020/12/21 14:54:23 by jjacobs       #+#    #+#                 */
-/*   Updated: 2020/12/21 15:17:59 by jjacobs       ########   odam.nl         */
+/*   Updated: 2021/01/29 19:05:13 by jjacobs       ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,28 +43,39 @@ void	testing(char *filename)
 	int		ret_value;
 
 	fd = open(filename, O_RDONLY);
-	line = calloc(10, sizeof(*line));
-	line[0] = strdup("ratel");
-	ret_value = 99;
-	ret_value = get_next_line(0, line);
-	printf("gnl returns %i\n", ret_value);
+	line = calloc(10, sizeof(*line));		//max 10 lines?
+	//line[0] = strdup("ratel");				//init first line
+	line[0] = calloc(1000, sizeof(**line));
+	ret_value = 99;							//init ret value
+	printf("= GNL READS:\n");
+	ret_value = get_next_line(fd, line);
+	printf("line: %s", *line);
+	ret_value = get_next_line(fd, line);
+	close(fd);
+	printf("\nline: %s", *line);
+	printf("\n= END OF GNL (gnl should not return the \\n, so no extra newline)\n");
+	printf("last gnl returns %i\n", ret_value);
 }
 
 void	prototyping(char *filename)
 {
 	printf("=== PROTOTYPING ======\n");	
 	int		fd;
-	char	buf[BUFFER_SIZE];
+	char	buf[BUFFER_SIZE + 1];
+	int		rd;
 
 	//prep
 	fd = open(filename, O_RDONLY);
 	printf("fd = %i\n", fd);
+	bzero(buf, BUFFER_SIZE + 1);
 	
-	//this would gnl 'do'
-	read(fd, buf, BUFFER_SIZE);
+	//this would gnl 'do', e.g. for one line at a time, and MAX ONE LINE
+	rd = read(fd, buf, BUFFER_SIZE);
+	printf("rd = %i\n", rd);
 	printf("= BUFFER READS:\n");
 	printf("%s", buf);
 	printf("= END OF BUFFER\n");
 	//closing
 	close(fd);
 }
+
